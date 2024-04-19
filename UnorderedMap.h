@@ -13,16 +13,15 @@ using std::list;
 //where it basically gave us a template to implement an unordered map
 //also slide 86 of graphs, sets and maps which gave us psedocode
 struct MovieInfo {
-    std::string name;
+    string name;
     int year;
     double rating;
-    MovieInfo(const std::string& name, int year, double rating)
+    MovieInfo(const string& name, int year, double rating)
         : name(name), year(year), rating(rating) {}
 };
 
-// A struct to hold a director's movie list and count
 struct DirectorMovies {
-    std::vector<MovieInfo> movies;
+    vector<MovieInfo> movies;
     size_t movieCount;
 
     void addMovie(const MovieInfo& movie) {
