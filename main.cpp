@@ -2,17 +2,18 @@
 #include <fstream>
 #include <sstream>
 #include <string>
+#include <unordered_map>
 #include "Graph.h"
 #include "UnorderedMap.h"
-
-void loadTitleBasics(Graph& graph, const string& filename) {
+//g++ -std=c++14 -Werror -Wuninitialized -o main ./main.cpp
+void loadTitleBasics(Graph& graph, const string& filename, unordered_map<string, std::pair<string, int>>& movie_map) {
     ifstream file(filename);
     if (!file.is_open()) {
         cerr << "Failed to open file: " + filename << endl;
         return;
     }
 
-    string line, tconst, titleType, primaryTitle;
+    string line, tconst, titleType, primaryTitle, originalTitle, isAdult, endYear, startYear;
     getline(file, line);
 
     while (getline(file, line)) {
@@ -20,14 +21,20 @@ void loadTitleBasics(Graph& graph, const string& filename) {
         getline(ss, tconst, '\t');
         getline(ss, titleType, '\t');
         getline(ss, primaryTitle, '\t');
+        getline(ss, originalTitle, '\t');
+        getline(ss, isAdult, '\t'); 
+        getline(ss, startYear, '\t'); 
+        getline(ss, endYear, '\t'); 
         if (titleType == "movie") {
             graph.addNode(tconst, primaryTitle);
+            int year = startYear != "\\N" ? std::stoi(startYear) : 0; //if N/A make it zero
+            movie_map[tconst] = {primaryTitle, year};; //will use map to first map the tconst to the primary title for both unordered map and max heap
         }
     }
     file.close();
 }
 
-void loadTitleCrew(Graph& graph, const string& filename) {
+void loadTitleCrew(Graph& graph, const string& filename, unordered_map<string, std::pair<string, int>>& movie_map) {
     ifstream file(filename);
     if (!file.is_open()) {
         cerr << "Failed to open file: " + filename << endl;
@@ -51,7 +58,10 @@ void loadTitleCrew(Graph& graph, const string& filename) {
                     Node* movieNode = graph.getNode(tconst);
                     Node* directorNode = graph.addNode(directorId, "Director: Unknown");
                     if (movieNode && directorNode) {
-                        graph.addEdge(directorId, tconst);
+                        graph.addEdge(directorId, tconst); //might need to delete if we arent using graphs anymore
+                    }
+                    if(movie_map.find(tconst) != movie_map.end()){
+                        
                     }
                 }
             }
@@ -85,11 +95,12 @@ void loadTitleRatings(Graph& graph, const string& filename) {
 }
 
 int main() {
+     unordered_map<string, std::pair<string, int>> movieMap;
     Graph movieGraph;
-    loadTitleBasics(movieGraph, "title-metadata.tsv");
-    loadTitleCrew(movieGraph, "title-crew.tsv");
-    loadTitleRatings(movieGraph, "title.ratings.tsv");
-    movieGraph.display();
-
+    loadTitleBasics(movieGraph, "title-metadata.tsv", movieMap);
+     std::cout << "Title: " << movieMap["tt0044895"].first << ", Year: " << movieMap["tt0044895"].second << std::endl; //for testing
+    loadTitleCrew(movieGraph, "title-crew.tsv", movieMap);
+   //loadTitleRatings(movieGraph, "title.ratings.tsv"); doesnt work and wont need
+    //movieGraph.display(); comment out for now for testing
     return 0;
 }
