@@ -22,10 +22,29 @@ struct MovieInfo {
 
 struct DirectorMovies {
     vector<MovieInfo> movies;
-    size_t movieCount;
+    int movieCount;
 
     void addMovie(const MovieInfo& movie) {
         movies.push_back(movie);
         movieCount = movies.size();
     }
 };
+
+class UnorderedMap {
+private:
+    struct KeyValuePair {
+        string key; //director's name
+        DirectorMovies value; //movies vector of struct that contains all infor for that movie
+        KeyValuePair(const std::string& key, const DirectorMovies& value)
+            : key(key), value(value) {}
+    };
+
+    vector<list<KeyValuePair>> buckets;
+    hash<string> hasher;
+    size_t bucketCount;
+
+    size_t getBucketIndex(const string& key) const {
+        return hasher(key) % bucketCount;
+    }
+
+public:
