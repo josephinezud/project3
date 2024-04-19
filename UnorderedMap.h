@@ -9,22 +9,24 @@ using std::string;
 using std::vector;
 using std::hash;
 using std::list;
+//cite slides in Final Exam discussion Powerpoint (54 and 55) 
+//where it basically gave us a template to implement an unordered map
+//also slide 86 of graphs, sets and maps which gave us psedocode
+struct MovieInfo {
+    std::string name;
+    int year;
+    double rating;
+    MovieInfo(const std::string& name, int year, double rating)
+        : name(name), year(year), rating(rating) {}
+};
 
-class UnorderedMap {
-private:
-    struct IMDBPair { 
-        string key;
-        string value;
-        IMDBPair(const string &key, const string &value) : key(key), value(value) {} 
-    };
+// A struct to hold a director's movie list and count
+struct DirectorMovies {
+    std::vector<MovieInfo> movies;
+    size_t movieCount;
 
-    vector<std::list<IMDBPair>> buckets; 
-    hash<std::string> hasher;
-    size_t bucketCount; //used size t to avoid errors since it is a type that is used in the standard library
-    //in addition, it is normally used to represent the size of an object
-    //https://pvs-studio.com/en/blog/terms/0044/#:~:text=size_t%20is%20a%20special%20unsigned,possible%20array%20or%20an%20object.
-
-    size_t getBucketIndex(const string &key) const {
-        return hasher(key) % bucketCount;
+    void addMovie(const MovieInfo& movie) {
+        movies.push_back(movie);
+        movieCount = movies.size();
     }
-
+};
