@@ -15,7 +15,7 @@ using std::list;
 struct MovieInfo {
     string name;
     int year;
-    MovieInfo(const string& name, int year)
+    MovieInfo(string name, int year)
         : name(name), year(year) {} //wont do rating since file wont work
 };
 

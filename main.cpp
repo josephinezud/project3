@@ -49,6 +49,9 @@ void loadTitleCrew(Graph& graph, const string& filename, UnorderedMap& directorM
         getline(ss, tconst, '\t');
         getline(ss, directors, '\t');
         getline(ss, writers, '\t');
+        if (movie_map.find(tconst) == movie_map.end()) {
+            continue; //skip if movie not found
+        }
         auto movieIt = movie_map.find(tconst);
         if (!directors.empty() && directors != "\\N") {
             string directorId;
@@ -60,10 +63,11 @@ void loadTitleCrew(Graph& graph, const string& filename, UnorderedMap& directorM
                     if (movieNode && directorNode) {
                         graph.addEdge(directorId, tconst); //might need to delete if we arent using graphs anymore
                     }
-                if (!directorId.empty()) { //make sure we do not enter empty string
-                MovieInfo info(movieIt->second.first, movieIt->second.second);
-                directorMap.insert(directorId, info);
-                }
+                    //cout << "movie:" << movieIt->second.first << ", year: " << movieIt->second.second << endl; //for testing
+                    MovieInfo info(movieIt->second.first, movieIt->second.second);
+                    //cout<< "directorId: " << directorId << endl; //for testing
+                    directorMap.insert(directorId, info);
+                
                 }
             }
         }
@@ -98,10 +102,20 @@ void loadTitleRatings(Graph& graph, const string& filename) {
 int main() {
      unordered_map<string, std::pair<string, int>> movieMap;
     Graph movieGraph;
+    DirectorMovies moviesOfDirector;
     UnorderedMap directorMap(100); //pick appropirate bucket starting size
     loadTitleBasics(movieGraph, "title-metadata.tsv", movieMap);
-     std::cout << "Title: " << movieMap["tt0044895"].first << ", Year: " << movieMap["tt0044895"].second << std::endl; //for testing
+     std::cout << "Title: " << movieMap["tt0044893"].first << ", Year: " << movieMap["tt0044893"].second << std::endl; //for testing
     loadTitleCrew(movieGraph, "title-crew.tsv", directorMap, movieMap);
+    DirectorMovies testDirectorMovies;
+    if (directorMap.find("nm0678928", testDirectorMovies)) {
+        std::cout << "Director found with " << testDirectorMovies.movieCount << " movies." << std::endl;
+        for (const auto& movie : testDirectorMovies.movies) {
+            std::cout << " - " << movie.name << " (" << movie.year << ")" << std::endl;
+        }
+    } else {
+        std::cout << "Director not found." << std::endl;
+    }
    //loadTitleRatings(movieGraph, "title.ratings.tsv"); doesnt work and wont need
     //movieGraph.display(); comment out for now for testing
     return 0;
