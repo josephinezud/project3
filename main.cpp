@@ -28,13 +28,13 @@ void loadTitleBasics(Graph& graph, const string& filename, unordered_map<string,
         if (titleType == "movie") {
             graph.addNode(tconst, primaryTitle);
             int year = startYear != "\\N" ? std::stoi(startYear) : 0; //if N/A make it zero
-            movie_map[tconst] = {primaryTitle, year};; //will use map to first map the tconst to the primary title for both unordered map and max heap
+            movie_map[tconst] = {primaryTitle, year}; //will use map to first map the tconst to the primary title for both unordered map and max heap
         }
     }
     file.close();
 }
 
-void loadTitleCrew(Graph& graph, const string& filename, unordered_map<string, std::pair<string, int>>& movie_map) {
+void loadTitleCrew(Graph& graph, const string& filename, UnorderedMap& directorMap, unordered_map<string, std::pair<string, int>>& movie_map) {
     ifstream file(filename);
     if (!file.is_open()) {
         cerr << "Failed to open file: " + filename << endl;
@@ -49,7 +49,7 @@ void loadTitleCrew(Graph& graph, const string& filename, unordered_map<string, s
         getline(ss, tconst, '\t');
         getline(ss, directors, '\t');
         getline(ss, writers, '\t');
-
+        auto movieIt = movie_map.find(tconst);
         if (!directors.empty() && directors != "\\N") {
             string directorId;
             stringstream dirSS(directors);
@@ -60,9 +60,10 @@ void loadTitleCrew(Graph& graph, const string& filename, unordered_map<string, s
                     if (movieNode && directorNode) {
                         graph.addEdge(directorId, tconst); //might need to delete if we arent using graphs anymore
                     }
-                    if(movie_map.find(tconst) != movie_map.end()){
-                        
-                    }
+                if (!directorId.empty()) { //make sure we do not enter empty string
+                MovieInfo info(movieIt->second.first, movieIt->second.second);
+                directorMap.insert(directorId, info);
+                }
                 }
             }
         }
@@ -97,9 +98,10 @@ void loadTitleRatings(Graph& graph, const string& filename) {
 int main() {
      unordered_map<string, std::pair<string, int>> movieMap;
     Graph movieGraph;
+    UnorderedMap directorMap(100); //pick appropirate bucket starting size
     loadTitleBasics(movieGraph, "title-metadata.tsv", movieMap);
      std::cout << "Title: " << movieMap["tt0044895"].first << ", Year: " << movieMap["tt0044895"].second << std::endl; //for testing
-    loadTitleCrew(movieGraph, "title-crew.tsv", movieMap);
+    loadTitleCrew(movieGraph, "title-crew.tsv", directorMap, movieMap);
    //loadTitleRatings(movieGraph, "title.ratings.tsv"); doesnt work and wont need
     //movieGraph.display(); comment out for now for testing
     return 0;
