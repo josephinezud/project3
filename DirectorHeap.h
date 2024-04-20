@@ -6,6 +6,7 @@
 struct DirectorEntry {
     std::string id;
     size_t movieCount;
+    DirectorEntry() : id(""), movieCount(0) {} //i added a defualt constructor
     DirectorEntry(std::string id, size_t movieCount) : id(id), movieCount(movieCount) {}
 
     // Operator for max-heap property
@@ -71,4 +72,23 @@ public:
     bool isEmpty() const {
         return heap.empty();
     }
+    DirectorEntry getNthHighestDirector(size_t n) {
+    if (n == 0 || n > heap.size()) {
+        throw std::invalid_argument("Invalid value of n.");
+    }
+
+    vector<DirectorEntry> tempHeap = heap;
+    DirectorEntry nthDirector;
+
+    for (size_t i = 0; i < n; ++i) {
+        nthDirector = extractMax();
+    }
+
+    heap = tempHeap;
+
+    return nthDirector;
+}
+
+    
+    
 };

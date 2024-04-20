@@ -143,60 +143,64 @@ int main() {
 //        std::cout << "Director with the most movies: " << topDirector.id
 //                  << " with " << topDirector.movieCount << " movies." << std::endl;
 //    }
+size_t nth = 3;
+DirectorEntry nthDirector = directorHeap.getNthHighestDirector(nth);
+        cout << "The " << nth << "th director with the most movies directed is: " 
+        << nthDirector.id << " with " << nthDirector.movieCount << " movies." << std::endl;
 
+    //directorHeap.populateHeap(directorHeap);
+//    //will do do while loop from prog 1 and 2 for command line instead of while loop
+//        int choice, nth;
+//     do {
+//         cout << "Welcome to the IMDb dataset explorer. Discover the prolific directors and their cinematic contributions." << endl;
+//         cout << "1. Use the Unordered Map approach to analyze director-movie relationships." << endl;
+//         cout << "2. Use the Max Heap approach for a different analytical perspective." << endl;
+//         cout << "3. Exit" << endl;
+//         cout << "Enter your choice: ";
+//         cin >> choice;
 
-   //will do do while loop from prog 1 and 2 for command line instead of while loop
-       int choice, nth;
-    do {
-        cout << "Welcome to the IMDb dataset explorer. Discover the prolific directors and their cinematic contributions." << endl;
-        cout << "1. Use the Unordered Map approach to analyze director-movie relationships." << endl;
-        cout << "2. Use the Max Heap approach for a different analytical perspective." << endl;
-        cout << "3. Exit" << endl;
-        cout << "Enter your choice: ";
-        cin >> choice;
-
-        switch (choice) {
-            case 1: {
-                cout << "1. List information about the movies that the director of most movies directed." << endl;
-                cout << "2. Enter the nth director with the most movies." << endl;
-                cout << "Enter your choice: ";
-                cin >> nth;
-                if (nth == 1) {
-                    auto maxDirector = directorMap.getDirectorWithMostMovies();
-                    cout << "The director with the most movies is: " << maxDirector.first
-                              << " with " << maxDirector.second.movieCount << " movies:" << endl;
-                    for (const auto& movie : maxDirector.second.movies) {
-                        cout << " - " << movie.name << " (" << movie.year << ")" << endl;
-                    }
-                } else if (nth == 2) {
-                    cout << "Enter the ranking of the director you want to find: ";
-                    std::cin >> nth;
-                    try {
-                        auto nthDirector = directorMap.getNthDirectorByMovieCount(nth);
-                        cout << "The " << nth << "th director with the most movies is: " << nthDirector.first
-                                  << " with " << nthDirector.second.movieCount << " movies:" << endl;
-                        for (const auto& movie : nthDirector.second.movies) {
-                            cout << " - " << movie.name << " (" << movie.year << ")" << endl;
-                        }
-                    } catch (const std::exception& e) {
-                        cout << "Error: " << e.what() << endl;
-                    }
-                } else {
-                    cout << "Invalid choice." << endl;
-                }
-                break;
-            }
-            case 2:
-                cout << "Max heap method is not implemented in this example." << endl;
-                break;
-            case 3:
-                cout << "Exiting the program." << std::endl;
-                break;
-            default:
-                cout << "Invalid choice. Please try again." << std::endl;
-                break;
-        }
-    } while (choice != 3);
+//         switch (choice) {
+//             case 1: {
+//                 cout << "1. List information about the movies that the director of most movies directed." << endl;
+//                 cout << "2. Enter the nth director with the most movies." << endl;
+//                 cout << "Enter your choice: ";
+//                 cin >> nth;
+//                 if (nth == 1) {
+//                     auto maxDirector = directorMap.getDirectorWithMostMovies();
+//                     cout << "The director with the most movies is: " << maxDirector.first
+//                               << " with " << maxDirector.second.movieCount << " movies:" << endl;
+//                     for (const auto& movie : maxDirector.second.movies) {
+//                         cout << " - " << movie.name << " (" << movie.year << ")" << endl;
+//                     }
+//                 } else if (nth == 2) {
+//                     cout << "Enter the ranking of the director you want to find: ";
+//                     std::cin >> nth;
+//                     try {
+//                         auto nthDirector = directorMap.getNthDirectorByMovieCount(nth);
+//                         cout << "The " << nth << "th director with the most movies is: " << nthDirector.first
+//                                   << " with " << nthDirector.second.movieCount << " movies:" << endl;
+//                         for (const auto& movie : nthDirector.second.movies) {
+//                             cout << " - " << movie.name << " (" << movie.year << ")" << endl;
+//                         }
+//                     } catch (const std::exception& e) {
+//                         cout << "Error: " << e.what() << endl;
+//                     }
+//                 } else {
+//                     cout << "Invalid choice." << endl;
+//                 }
+//                 break;
+//             }
+//             case 2:
+//                 cout << "Max heap method is not implemented in this example." << endl;
+//                 break;
+//             case 3:
+//                 cout << "Exiting the program." << std::endl;
+//                 break;
+//             default:
+//                 cout << "Invalid choice. Please try again." << std::endl;
+//                 break;
+//         }
+//     } while (choice != 3);
 
     return 0;
 }
