@@ -143,18 +143,18 @@ pair<string, DirectorMovies> getNthDirectorByMovieCount(size_t n) const {
     string lastMaxDirectorId;
     size_t lastMaxCount = std::numeric_limits<size_t>::max();
 
-    for (size_t i = 0; i < n; ++i) { // Run this n times to find the nth highest
+    for (size_t i = 0; i < n; ++i) { //we want to run this n times to find the nth highest so basically iterate over the map n times to get max each time
         size_t maxMovies = 0;
         for (const auto& bucket : buckets) {
             for (const auto& kvp : bucket) {
-                // Check if this director has more movies than the current max but less than the last max
+                // we want to find the max that is less than the last max
                 if (kvp.value.movieCount > maxMovies && kvp.value.movieCount < lastMaxCount) {
                     maxMovies = kvp.value.movieCount;
                     nthMaxDirector = std::make_pair(kvp.key, kvp.value);
                 }
             }
         }
-        // Prepare for the next iteration to find the next lower max
+        //by preparing for the next iteration, we store the current max as the last max
         lastMaxCount = maxMovies;
         lastMaxDirectorId = nthMaxDirector.first;
     }
