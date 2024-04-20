@@ -69,7 +69,7 @@ void loadTitleCrew(Graph& graph, const string& filename, UnorderedMap& directorM
                     MovieInfo info(movieIt->second.first, movieIt->second.second);
                     directorMap.insert(directorId, info);
                     //cout<< "directorId: " << directorId << endl; //for testing
-                    directorHeap.insert(directorId, movieIt->second.second);
+                    directorHeap.insertOrUpdate(directorId, 1);
 
                 }
             }
@@ -124,29 +124,45 @@ int main() {
    //loadTitleRatings(movieGraph, "title.ratings.tsv"); doesnt work and wont need
     //movieGraph.display(); comment out for now for testing
     //could comment out when testing
-    // auto maxDirector = directorMap.getDirectorWithMostMovies();
-    // cout << "The director with the most movies is: " << maxDirector.first
-    //             << " with " << maxDirector.second.movieCount << " movies:" << std::endl;
-    // for (const auto& movie : maxDirector.second.movies) {
+    auto maxDirectormap = directorMap.getDirectorWithMostMovies();
+    cout << "The director with the most movies is: " << maxDirectormap.first
+                << " with " << maxDirectormap.second.movieCount << " movies:" << std::endl;
+    // for (const auto& movie : maxDirectormap.second.movies) {
     //     std::cout << " - " << movie.name << " (" << movie.year << ")" << std::endl;
     // }
     // //below has nth highest.
-    // size_t nth = 1; 
-    // auto nthDirector = directorMap.getNthDirectorByMovieCount(nth);
-    //     cout << "The " << nth << "th director with the most movies is: " << nthDirector.first << " with " << nthDirector.second.movies.size() << " movies." << std::endl;
-    // for (const auto& movie : nthDirector.second.movies) {
+    size_t nthmap = 2; 
+    auto nthDirectormap = directorMap.getNthDirectorByMovieCount(nthmap);
+        cout << "The " << nthmap << "th director with the most movies is: " << nthDirectormap.first << " with " << nthDirectormap.second.movies.size() << " movies." << std::endl;
+    // for (const auto& movie : nthDirectormap.second.movies) {
     //     std::cout << " - " << movie.name << " (" << movie.year << ")" << std::endl;
     // }     
-      //    //displays director with highest movie count
-   if (!directorHeap.isEmpty()) {
-       DirectorEntry topDirector = directorHeap.extractMax();
-       std::cout << "Director with the most movies: " << topDirector.id
-                 << " with " << topDirector.movieCount << " movies." << std::endl;
-   }
-size_t nth = 1;
-DirectorEntry nthDirector = directorHeap.getNthHighestDirector(nth);
-        cout << "The " << nth << "th director with the most movies directed is: " 
-        << nthDirector.id << " with " << nthDirector.movieCount << " movies." << std::endl;
+         //displays director with highest movie count
+
+        // Extract the director with the most movies
+     auto maxDirector = directorHeap.extractMax();
+     std::cout << "Director with the most movies: " << maxDirector.id
+              << " with " << maxDirector.movieCount << " movies." << std::endl;
+
+    size_t nth = 2;
+    auto nthDirector = directorHeap.getNthHighestDirector(nth);
+    std::cout << nth << "th highest director: " << nthDirector.id
+                  << " with " << nthDirector.movieCount << " movies." << std::endl;
+    // for (const auto& movie : topDirector.movies) {
+    //     std::cout << "Movie: " << movie.name << ", Year: " << movie.year << std::endl;
+    // }
+
+
+    // size_t nth = 3; // Example for the 3rd highest director
+
+    // // Get the nth highest director
+    // DirectorEntry nthDirector = directorHeap.getNthHighestDirector(nth);
+    // std::cout << "The " << nth << "th director with the most movies is: " << nthDirector.id << std::endl;
+    // std::cout << "Movies count: " << nthDirector.getMovieCount() << std::endl;
+    // for (const auto& movie : nthDirector.movies) {
+    //     std::cout << "Movie: " << movie.name << ", Year: " << movie.year << std::endl;
+    // }
+ 
 
     //directorHeap.populateHeap(directorHeap);
 //    //will do do while loop from prog 1 and 2 for command line instead of while loop
