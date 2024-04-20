@@ -111,4 +111,58 @@ public:
     }
 
 
+pair<string, DirectorMovies> getDirectorWithMostMovies() const {
+    pair<string, DirectorMovies> maxDirector;
+    size_t maxMovies = 0;
+    //standard for loop to iterate through the buckets
+    for (const auto& bucket : buckets) { 
+        for (const auto& keyvalp : bucket) { 
+            if (keyvalp.value.movieCount > maxMovies) {
+                maxMovies = keyvalp.value.movieCount;
+                maxDirector = std::make_pair(keyvalp.key, keyvalp.value); //want KeyValuePair to be in pair
+
+            }
+        }
+    }
+
+    if (maxMovies == 0) {
+        throw std::runtime_error("No directors found in the map.");
+    }
+
+    return maxDirector;
+}
+pair<string, DirectorMovies> getNthDirectorByMovieCount(size_t n) const {
+    if (n == 0) {
+        throw std::invalid_argument("Ranking starts at 1 (n must be greater than 0).");
+    }
+    if (n > size_) {
+        throw std::out_of_range("Not enough directors in the map to get the nth highest count.");
+    }
+
+    pair<string, DirectorMovies> nthMaxDirector;
+    string lastMaxDirectorId;
+    size_t lastMaxCount = std::numeric_limits<size_t>::max();
+
+    for (size_t i = 0; i < n; ++i) { // Run this n times to find the nth highest
+        size_t maxMovies = 0;
+        for (const auto& bucket : buckets) {
+            for (const auto& kvp : bucket) {
+                // Check if this director has more movies than the current max but less than the last max
+                if (kvp.value.movieCount > maxMovies && kvp.value.movieCount < lastMaxCount) {
+                    maxMovies = kvp.value.movieCount;
+                    nthMaxDirector = std::make_pair(kvp.key, kvp.value);
+                }
+            }
+        }
+        // Prepare for the next iteration to find the next lower max
+        lastMaxCount = maxMovies;
+        lastMaxDirectorId = nthMaxDirector.first;
+    }
+
+    return nthMaxDirector;
+}
+
+
+
+
 };

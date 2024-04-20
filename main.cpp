@@ -105,18 +105,31 @@ int main() {
     DirectorMovies moviesOfDirector;
     UnorderedMap directorMap(100); //pick appropirate bucket starting size
     loadTitleBasics(movieGraph, "title-metadata.tsv", movieMap);
-     std::cout << "Title: " << movieMap["tt0044893"].first << ", Year: " << movieMap["tt0044893"].second << std::endl; //for testing
+    //std::cout << "Title: " << movieMap["tt0044893"].first << ", Year: " << movieMap["tt0044893"].second << std::endl; //for testing
     loadTitleCrew(movieGraph, "title-crew.tsv", directorMap, movieMap);
-    DirectorMovies testDirectorMovies;
-    if (directorMap.find("nm0678928", testDirectorMovies)) {
-        std::cout << "Director found with " << testDirectorMovies.movieCount << " movies." << std::endl;
-        for (const auto& movie : testDirectorMovies.movies) {
-            std::cout << " - " << movie.name << " (" << movie.year << ")" << std::endl;
-        }
-    } else {
-        std::cout << "Director not found." << std::endl;
-    }
+    //DirectorMovies testDirectorMovies;
+    // if (directorMap.find("nm0139878", testDirectorMovies)) {
+    //     std::cout << "Director found with " << testDirectorMovies.movieCount << " movies." << std::endl;
+    //     for (const auto& movie : testDirectorMovies.movies) {
+    //         std::cout << " - " << movie.name << " (" << movie.year << ")" << std::endl;
+    //     }
+    // } else {
+    //     std::cout << "Director not found." << std::endl;
+    // }
    //loadTitleRatings(movieGraph, "title.ratings.tsv"); doesnt work and wont need
     //movieGraph.display(); comment out for now for testing
+    auto maxDirector = directorMap.getDirectorWithMostMovies();
+    cout << "The director with the most movies is: " << maxDirector.first
+                << " with " << maxDirector.second.movieCount << " movies:" << std::endl;
+    for (const auto& movie : maxDirector.second.movies) {
+        std::cout << " - " << movie.name << " (" << movie.year << ")" << std::endl;
+    }
+    size_t nth = 1; 
+    auto nthDirector = directorMap.getNthDirectorByMovieCount(nth);
+        cout << "The " << nth << "th director with the most movies is: " << nthDirector.first << " with " << nthDirector.second.movies.size() << " movies." << std::endl;
+    for (const auto& movie : maxDirector.second.movies) {
+        std::cout << " - " << movie.name << " (" << movie.year << ")" << std::endl;
+    }              
+   
     return 0;
 }
