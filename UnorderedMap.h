@@ -4,7 +4,7 @@
 #include <string>
 #include <functional> //need to do this the hash the values
 
-
+using std::pair;
 using std::cout;
 using std::cin;
 using std::endl;
