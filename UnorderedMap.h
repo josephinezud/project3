@@ -4,13 +4,12 @@
 #include <string>
 #include <functional> //need to do this the hash the values
 using std::cout;
+using std::cin;
 using std::endl;
 using std::string;
 using std::vector;
 using std::hash;
 using std::list;
-//cite slides in Final Exam discussion Powerpoint (54 and 55) 
-//where it basically gave us a template to implement an unordered map
 //also slide 86 of graphs, sets and maps which gave us psedocode
 struct MovieInfo {
     string name;
@@ -34,6 +33,10 @@ struct DirectorMovies {
 class UnorderedMap {
 private:
     struct KeyValuePair {
+        //cite copilot for simple help like completing simple parts of repetitive code like parameters for for loops and helps with comments that explains thinking
+        //only simple use not whole use
+        //cite slides in Final Exam discussion Powerpoint (54 and 55) 
+        //where it basically gave us a template to implement an unordered map
         string key; //director's name (will be code)
         DirectorMovies value; //movies vector of struct that contains all infor for that movie
         KeyValuePair(const string& key, const DirectorMovies& value)
