@@ -96,14 +96,15 @@ int main() {
 
 
    //will do do while loop from prog 1 and 2 for command line instead of while loop
-       int choice, nth;
+    int choice, nth;
     do {
         cout << "\nWelcome to the IMDb dataset explorer. Discover the prolific directors and their cinematic contributions.\n";
         cout << "1. Use the Unordered Map approach to obtain the director of most movies directed.\n";
         cout << "2. Use the Max Heap approach to obtain the director of most movies directed.\n";
         cout << "3. Enter the nth director with the most movies.\n";
         cout << "4. View the corresponding movies and years associated with the selected director.\n";
-        cout << "5. Exit\n";
+        cout << "5. List all directors up to the nth rank based on the number of movies directed.\n";
+        cout << "6. Exit\n";
         cout << "Enter your choice: ";
         cin >> choice;
 
@@ -151,14 +152,28 @@ int main() {
                 }
                 break;
             }
-            case 5:
+            case 5: {
+                cout << "Enter the maximum ranking of directors to list: ";
+                cin >> nth;
+                for (int i = 1; i <= nth; i++) {
+                    try {
+                        auto director = directorMap.getNthDirectorByMovieCount(i);
+                        cout << i << ". " << director.first << " with " << director.second.movieCount << " movies\n";
+                    } catch (const std::exception& e) {
+                        cout << "Error retrieving data for rank " << i << ": " << e.what() << "\n";
+                        break;
+                    }
+                }
+                break;
+            }
+            case 6:
                 cout << "Exiting the program.\n";
                 break;
             default:
                 cout << "Invalid choice. Please try again.\n";
                 break;
         }
-    } while (choice != 5);
+    } while (choice != 6);
 
 //how we tested  below:
     //DirectorMovies moviesOfDirector;
