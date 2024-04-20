@@ -168,12 +168,12 @@ pair<string, DirectorMovies> getNthDirectorByMovieCount(size_t n) const {
 }
 
 //added helper funtion for directorheaps to iterate through
-void populateHeap(DirectorHeap& heap) {
-        for (const auto& bucket : buckets) {
-            for (const auto& kvp : bucket) {
-                heap.insert(kvp.key, kvp.value.movieCount);
-            }
-        }
-    }
+// void populateHeap(DirectorHeap& heap) {
+//         for (const auto& bucket : buckets) {
+//             for (const auto& kvp : bucket) {
+//                 heap.insert(kvp.key, kvp.value.movieCount);
+//             }
+//         }
+//     }
 
 };
