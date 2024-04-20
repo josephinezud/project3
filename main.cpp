@@ -138,12 +138,12 @@ int main() {
     //     std::cout << " - " << movie.name << " (" << movie.year << ")" << std::endl;
     // }     
       //    //displays director with highest movie count
-//    if (!directorHeap.isEmpty()) {
-//        DirectorEntry topDirector = directorHeap.extractMax();
-//        std::cout << "Director with the most movies: " << topDirector.id
-//                  << " with " << topDirector.movieCount << " movies." << std::endl;
-//    }
-size_t nth = 3;
+   if (!directorHeap.isEmpty()) {
+       DirectorEntry topDirector = directorHeap.extractMax();
+       std::cout << "Director with the most movies: " << topDirector.id
+                 << " with " << topDirector.movieCount << " movies." << std::endl;
+   }
+size_t nth = 1;
 DirectorEntry nthDirector = directorHeap.getNthHighestDirector(nth);
         cout << "The " << nth << "th director with the most movies directed is: " 
         << nthDirector.id << " with " << nthDirector.movieCount << " movies." << std::endl;
