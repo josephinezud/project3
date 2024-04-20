@@ -90,27 +90,6 @@ public:
         return max;
     }
 
-    // the function retrieves the Nth highest director based on the number of movies directed
-    DirectorEntry getNthHighestDirector(size_t n) {
-        if (n == 0 || n > heap.size()) {
-            throw std::invalid_argument("Invalid value of n.");
-        }
-        std::vector<DirectorEntry> tempHeap = heap;
-        std::unordered_map<std::string, size_t> tempIndexMap = indexMap;
-
-        DirectorEntry nthDirector;
-        for (size_t i = 0; i < n; ++i) {
-            nthDirector = extractMax();
-        }
-
-        heap = tempHeap;
-        indexMap = tempIndexMap;
-        for (size_t i = heap.size() / 2; i-- > 0; ) {
-            heapifyDown(i);
-        }
-
-        return nthDirector;
-    }
 
     bool isEmpty() const {
         return heap.empty();
