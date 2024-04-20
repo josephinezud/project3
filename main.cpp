@@ -5,6 +5,8 @@
 #include <unordered_map>
 #include "Graph.h"
 #include "UnorderedMap.h"
+#include "DirectorHeap.h"
+
 //g++ -std=c++14 -Werror -Wuninitialized -o main ./main.cpp
 void loadTitleBasics(Graph& graph, const string& filename, unordered_map<string, std::pair<string, int>>& movie_map) {
     ifstream file(filename);
@@ -34,7 +36,7 @@ void loadTitleBasics(Graph& graph, const string& filename, unordered_map<string,
     file.close();
 }
 
-void loadTitleCrew(Graph& graph, const string& filename, UnorderedMap& directorMap, unordered_map<string, std::pair<string, int>>& movie_map) {
+void loadTitleCrew(Graph& graph, const string& filename, UnorderedMap& directorMap, unordered_map<string, std::pair<string, int>>& movie_map, DirectorHeap& directorHeap) {
     ifstream file(filename);
     if (!file.is_open()) {
         cerr << "Failed to open file: " + filename << endl;
@@ -65,15 +67,17 @@ void loadTitleCrew(Graph& graph, const string& filename, UnorderedMap& directorM
                     }
                     //cout << "movie:" << movieIt->second.first << ", year: " << movieIt->second.second << endl; //for testing
                     MovieInfo info(movieIt->second.first, movieIt->second.second);
-                    //cout<< "directorId: " << directorId << endl; //for testing
                     directorMap.insert(directorId, info);
-                
+                    //cout<< "directorId: " << directorId << endl; //for testing
+                    directorHeap.insert(directorId, movieIt->second.second);
+
                 }
             }
         }
     }
     file.close();
 }
+
 
 void loadTitleRatings(Graph& graph, const string& filename) {
     ifstream file(filename);
@@ -100,13 +104,14 @@ void loadTitleRatings(Graph& graph, const string& filename) {
 }
 
 int main() {
-     unordered_map<string, std::pair<string, int>> movieMap;
+    unordered_map<string, std::pair<string, int>> movieMap;
     Graph movieGraph;
     DirectorMovies moviesOfDirector;
     UnorderedMap directorMap(100); //pick appropirate bucket starting size
+    DirectorHeap directorHeap;
     loadTitleBasics(movieGraph, "title-metadata.tsv", movieMap);
     //std::cout << "Title: " << movieMap["tt0044893"].first << ", Year: " << movieMap["tt0044893"].second << std::endl; //for testing
-    loadTitleCrew(movieGraph, "title-crew.tsv", directorMap, movieMap);
+    loadTitleCrew(movieGraph, "title-crew.tsv", directorMap, movieMap, directorHeap); // added directorheap 
     //DirectorMovies testDirectorMovies;
     // if (directorMap.find("nm0139878", testDirectorMovies)) {
     //     std::cout << "Director found with " << testDirectorMovies.movieCount << " movies." << std::endl;
@@ -132,6 +137,13 @@ int main() {
     // for (const auto& movie : nthDirector.second.movies) {
     //     std::cout << " - " << movie.name << " (" << movie.year << ")" << std::endl;
     // }     
+      //    //displays director with highest movie count
+//    if (!directorHeap.isEmpty()) {
+//        DirectorEntry topDirector = directorHeap.extractMax();
+//        std::cout << "Director with the most movies: " << topDirector.id
+//                  << " with " << topDirector.movieCount << " movies." << std::endl;
+//    }
+
 
    //will do do while loop from prog 1 and 2 for command line instead of while loop
        int choice, nth;
