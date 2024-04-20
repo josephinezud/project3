@@ -3,6 +3,8 @@
 #include <list>
 #include <string>
 #include <functional> //need to do this the hash the values
+#include "DirectorHeap.h"
+
 using std::cout;
 using std::cin;
 using std::endl;
@@ -165,7 +167,13 @@ pair<string, DirectorMovies> getNthDirectorByMovieCount(size_t n) const {
     return nthMaxDirector;
 }
 
-
-
+//added helper funtion for directorheaps to iterate through
+void populateHeap(DirectorHeap& heap) {
+        for (const auto& bucket : buckets) {
+            for (const auto& kvp : bucket) {
+                heap.insert(kvp.key, kvp.value.movieCount);
+            }
+        }
+    }
 
 };
