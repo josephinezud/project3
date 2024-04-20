@@ -118,16 +118,16 @@ int main() {
     // }
    //loadTitleRatings(movieGraph, "title.ratings.tsv"); doesnt work and wont need
     //movieGraph.display(); comment out for now for testing
-    auto maxDirector = directorMap.getDirectorWithMostMovies();
-    cout << "The director with the most movies is: " << maxDirector.first
-                << " with " << maxDirector.second.movieCount << " movies:" << std::endl;
-    for (const auto& movie : maxDirector.second.movies) {
-        std::cout << " - " << movie.name << " (" << movie.year << ")" << std::endl;
-    }
+    // auto maxDirector = directorMap.getDirectorWithMostMovies();
+    // cout << "The director with the most movies is: " << maxDirector.first
+    //             << " with " << maxDirector.second.movieCount << " movies:" << std::endl;
+    // for (const auto& movie : maxDirector.second.movies) {
+    //     std::cout << " - " << movie.name << " (" << movie.year << ")" << std::endl;
+    // }
     size_t nth = 1; 
     auto nthDirector = directorMap.getNthDirectorByMovieCount(nth);
         cout << "The " << nth << "th director with the most movies is: " << nthDirector.first << " with " << nthDirector.second.movies.size() << " movies." << std::endl;
-    for (const auto& movie : maxDirector.second.movies) {
+    for (const auto& movie : nthDirector.second.movies) {
         std::cout << " - " << movie.name << " (" << movie.year << ")" << std::endl;
     }              
    
